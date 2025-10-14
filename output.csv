@@ -1,0 +1,180 @@
+From,Credential,Credential_domain,Identity,Correspondent,Correspondent_preferredLanguage,Contact,Contact_role,Name,Name_{http://www.w3.org/XML/1998/namespace}lang,To,Sender,SharedSecret,UserAgent,Request_Id,Request_deploymentMode,InvoiceDetailRequest,InvoiceDetailRequestHeader,InvoiceDetailRequestHeader_invoiceDate,InvoiceDetailRequestHeader_invoiceID,InvoiceDetailRequestHeader_invoiceOrigin,InvoiceDetailRequestHeader_operation,InvoiceDetailRequestHeader_purpose,InvoiceDetailHeaderIndicator,InvoiceDetailLineIndicator,InvoicePartner,Contact_addressID,Email,Email_name,Email_preferredLang,PaymentTerm,PaymentTerm_payInNumberOfDays,Comments,Extrinsic,Extrinsic_name,Attachment,URL,InvoiceDetailOrder,InvoiceDetailOrderInfo,OrderIDInfo,OrderIDInfo_orderID,InvoiceDetailItem,InvoiceDetailItem_invoiceLineNumber,InvoiceDetailItem_quantity,UnitOfMeasure,UnitPrice,Money,Money_currency,InvoiceDetailItemReference,InvoiceDetailItemReference_lineNumber,Description,Description_{http://www.w3.org/XML/1998/namespace}lang,SubtotalAmount,Distribution,Accounting,Accounting_name,AccountingSegment,AccountingSegment_id,Charge,Money_alternateAmount,Money_alternateCurrency,InvoiceDetailSummary,Tax,TaxDetail,TaxDetail_category,TaxDetail_percentageRate,TaxableAmount,TaxAmount,NetAmount
+"
+			","
+				",NetworkID,AN01574874195-T,"
+				",en-US,"
+					",correspondent,"Tora Trading Services, LLC",en-US,"
+			","
+			",UBSPass1!,Excalibur Invoice Upload Utility,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,"
+				",PrivateID,0001089728,"
+				",en-US,"
+					",correspondent,"Tora Trading Services, LLC",en-US,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,PrivateID,0001089728,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,en-US,"
+					",correspondent,"Tora Trading Services, LLC",en-US,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,correspondent,"Tora Trading Services, LLC",en-US,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,en-US,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,"
+				",SystemID,LQECLNT100,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,NetworkID,AN01395405443-T,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,SystemID,LQECLNT100,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,"
+				",NetworkID,AN01574874195-T,,,,,,,,,UBSPass1!,Excalibur Invoice Upload Utility,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,NetworkID,AN01574874195-T,,,,,,,,,UBSPass1!,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,"
+						",soldTo,GeneralLedger,en,,,,,cXMLData,test,"
+			","
+				",2025-07-04T00:00:00+02:00,excInv01,supplier,new,standard,,,"
+					",0001089728:,subha.sreeram@ubs.com,Default,en-US,,13,"Some items in this bill are not subject to local VAT / Tax. You are required to self account for VAT / Tax where VAT / Tax is not applied.
+     ",Excalibur,Source System,"
+						",cid:112b5d4a-5f1e-47e2-a353-a7f811d835ae,"
+				","
+					",,,"
+					",2,1,EA,"
+						",1764.00,USD,"
+						",1,Summary Tax,en-US,"
+					","
+						","
+							",DistributionCharge,"
+								",6204000001,"
+							",,,"
+				","
+					","
+						",SalesTax,0,"
+							","
+							","
+					"
+,,,,,,"
+						",soldTo,GeneralLedger,en,,,,,,,,"
+				",2025-07-04T00:00:00+02:00,excInv01,supplier,new,standard,,,"
+					",0001089728:,subha.sreeram@ubs.com,Default,en-US,,13,"Some items in this bill are not subject to local VAT / Tax. You are required to self account for VAT / Tax where VAT / Tax is not applied.
+     ",Excalibur,Source System,"
+						",cid:112b5d4a-5f1e-47e2-a353-a7f811d835ae,"
+				","
+					",,,"
+					",2,1,EA,"
+						",1764.00,USD,"
+						",1,Summary Tax,en-US,"
+					","
+						","
+							",DistributionCharge,"
+								",6204000001,"
+							",,,"
+				","
+					","
+						",SalesTax,0,"
+							","
+							","
+					"
+,,,,,,"
+						",soldTo,,,,,,,,,,,2025-07-04T00:00:00+02:00,excInv01,supplier,new,standard,,,"
+					",0001089728:,subha.sreeram@ubs.com,Default,en-US,,13,"Some items in this bill are not subject to local VAT / Tax. You are required to self account for VAT / Tax where VAT / Tax is not applied.
+     ",Excalibur,Source System,"
+						",cid:112b5d4a-5f1e-47e2-a353-a7f811d835ae,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,"
+						",remitTo,,,,,,,,,,,,,,,,,,,0001089728:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,remitTo,,,,,,,,,,,,,,,,,,,0001089728:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,"
+						",soldTo,,,,,,,,,,,,,,,,,,,,subha.sreeram@ubs.com,Default,en-US,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,soldTo,,,,,,,,,,,,,,,,,,,,subha.sreeram@ubs.com,Default,en-US,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,Default,en-US,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,invoicePDF,"
+						",cid:112b5d4a-5f1e-47e2-a353-a7f811d835ae,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,cid:112b5d4a-5f1e-47e2-a353-a7f811d835ae,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Bank Account Number,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Bank Swift Code,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Bank Code,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,isrNumber,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Payment Terms,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,CompanyCode,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,invoiceSubmissionMethod,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Invoice Request Track ID,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SupplierRegistrationID,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Source System,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,GeneralLedger,en,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+					",,,"
+					",2,1,EA,"
+						",1.0,USD,"
+						",1,mds charges,en-US,"
+						","
+						","
+							",DistributionCharge,"
+								",6204000001,"
+							",,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,GeneralLedger,en,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,1,EA,"
+						",,USD,"
+						",1,ID,en,"
+						","
+						","
+							",DistributionCharge,"
+								",6204000001,"
+							",,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,MDS charges,en-US,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,en-US,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,GeneralLedger,en,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,ID,en,,,"
+							",DistributionCharge,"
+								",6204000001,"
+							",,,,,,,,,,
+,,,,,,,,GeneralLedger,en,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ID,en,,,,DistributionCharge,"
+								",6204000001,,,,,,,,,,,
+,,,,,,,,GeneralLedger,en,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,ID,en,,,,,,6204000001,,,,,,,,,,,
+,,,,,,,,,en,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,en,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2,1,EA,"
+						",1.0,USD,"
+						",1,mds charges,en-US,"
+						",,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,mds charges,en-US,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,en-US,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1.0,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1764.00,USD,,,Summary Tax,en-US,"
+					",,,,,,,,,,"
+					","
+						",SalesTax,0,"
+							","
+							","
+					"
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1764,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,USD,,,Summary Tax,en-US,,,,,,,,,,,,"
+						",SalesTax,0,"
+							","
+							",
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,en-US,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,USD,,,,,,,,,,,,,,,,,SalesTax,0,"
+							","
+							",
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,0.0,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1764.00,USD,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,USD,,,,,,,,,,,,,,,,,,,,,

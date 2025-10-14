@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cXML SYSTEM "http://xml.cxml.org/schemas/cXML/1.2.067/InvoiceDetail.dtd">
+<cXML payloadID="1758608144436-9170182280224767220@10.209.37.102" signatureVersion="1.0"
+    timestamp="2025-09-22T23:15:44-07:00" version="1.2.067">
+    <Header>
+        <From>
+            <Credential
+                domain="NetworkID">
+                <Identity>AN01647969274-T</Identity>
+            </Credential>
+        </From>
+        <To>
+            <Credential
+                domain="NetworkID">
+                <Identity>AN01395405443-T</Identity>
+            </Credential>
+            <Credential
+                domain="SystemID">
+                <Identity>LQECLNT100</Identity>
+            </Credential>
+        </To>
+        <Sender>
+            <Credential domain="NetworkID">
+                <Identity>AN01000000001</Identity>
+            </Credential>
+            <UserAgent>Supplier</UserAgent>
+        </Sender>
+    </Header>
+    <Request Id="cXMLData" deploymentMode="test">
+        <InvoiceDetailRequest>
+            <InvoiceDetailRequestHeader invoiceDate="2025-09-23T08:15:44+02:00"
+                invoiceID="Dis1" invoiceOrigin="supplier" operation="new"
+                purpose="standard">
+                <InvoiceDetailHeaderIndicator />
+                <InvoiceDetailLineIndicator
+                    isDiscountInLine="yes" />
+                <InvoicePartner>
+                    <Contact
+                        addressID="0001011611:01" role="remitTo">
+                        <Name
+                            xml:lang="en-US">MORI HAMADA &amp; MATSUMOTO test UBS - TEST</Name>
+                        <PostalAddress>
+                            <Street>2-6-1 MARUNOUCHI CHIYODA-KU</Street>
+                            <Street />
+                            <Street />
+                            <Street />
+                            <City>test</City>
+                            <State
+                                isoStateCode="SZ-LU">Lubombo</State>
+                            <PostalCode>8010</PostalCode>
+                            <Country
+                                isoCountryCode="SZ">Swaziland</Country>
+                        </PostalAddress>
+                    </Contact>
+                </InvoicePartner>
+                <InvoicePartner>
+                    <Contact
+                        addressID="2" role="from">
+                        <Name
+                            xml:lang="en-US">MORI HAMADA &amp; MATSUMOTO test UBS - TEST</Name>
+                        <PostalAddress>
+                            <Street>Europaallee 21</Street>
+                            <Street />
+                            <Street />
+                            <Street />
+                            <City>Zürich</City>
+                            <State
+                                isoStateCode="CH-ZH">Zürich</State>
+                            <PostalCode>8004</PostalCode>
+                            <Country
+                                isoCountryCode="CH">Switzerland</Country>
+                        </PostalAddress>
+                    </Contact>
+                </InvoicePartner>
+                <InvoicePartner>
+                    <Contact
+                        role="billFrom">
+                        <Name
+                            xml:lang="en-US">MORI HAMADA &amp; MATSUMOTO test UBS - TEST</Name>
+                        <PostalAddress>
+                            <Street>Europaallee 21</Street>
+                            <Street />
+                            <Street />
+                            <Street />
+                            <City>Zürich</City>
+                            <PostalCode>8004</PostalCode>
+                            <Country
+                                isoCountryCode="CH">Switzerland</Country>
+                        </PostalAddress>
+                    </Contact>
+                </InvoicePartner>
+                <InvoicePartner>
+                    <Contact
+                        role="soldTo">
+                        <Name
+                            xml:lang="en-US">UBS AG</Name>
+                        <PostalAddress>
+                            <Street>Postfach</Street>
+                            <Street />
+                            <Street />
+                            <Street />
+                            <City>Zürich</City>
+                            <PostalCode>8098</PostalCode>
+                            <Country
+                                isoCountryCode="CH">Switzerland</Country>
+                        </PostalAddress>
+                        <Email>sh-aribauat25@ubs.com</Email>
+                    </Contact>
+                </InvoicePartner>
+                <InvoicePartner>
+                    <Contact
+                        role="wireReceivingBank">
+                        <Name
+                            xml:lang="en-US">HSBC</Name>
+                    </Contact>
+                    <IdReference
+                        domain="accountName"
+                        identifier="MORI HAMADA &amp; MATSUMOTO Test" />
+                    <IdReference
+                        domain="accountType" identifier="Checking" />
+                    <IdReference
+                        domain="accountID" identifier="6999235" />
+                    <IdReference
+                        domain="swiftID"
+                        identifier="SMBCJPJTXXX" />
+                </InvoicePartner>
+                <InvoiceDetailShipping>
+                    <Contact
+                        role="shipFrom">
+                        <Name
+                            xml:lang="en-US">MORI HAMADA &amp; MATSUMOTO test UBS - TEST</Name>
+                        <PostalAddress>
+                            <Street>2-6-1 MARUNOUCHI CHIYODA-KU</Street>
+                            <Street />
+                            <Street />
+                            <Street />
+                            <City>Tokyo</City>
+                            <State
+                                isoStateCode="JP-13">Tokyo</State>
+                            <PostalCode>100-8222</PostalCode>
+                            <Country
+                                isoCountryCode="JP">Japan</Country>
+                        </PostalAddress>
+                    </Contact>
+                    <Contact
+                        role="shipTo">
+                        <Name
+                            xml:lang="en-US">UBS AG</Name>
+                        <PostalAddress>
+                            <Street>Postfach</Street>
+                            <Street />
+                            <Street />
+                            <Street />
+                            <City>Zürich</City>
+                            <PostalCode>8098</PostalCode>
+                            <Country
+                                isoCountryCode="CH">Switzerland</Country>
+                        </PostalAddress>
+                    </Contact>
+                </InvoiceDetailShipping>
+                <Comments>[Ariba added comment: Created in the name and on behalf of the supplier] </Comments>
+                <Extrinsic
+                    name="invoiceSourceDocument">NoOrderInformation</Extrinsic>
+                <Extrinsic
+                    name="invoiceSubmissionMethod">Online</Extrinsic>
+                <Extrinsic
+                    name="paymentMethod">wire</Extrinsic>
+                <Extrinsic name="invoicePDF">
+                    <Attachment>
+                        <URL>cid:1979599982.1758608151246@cxml.org</URL>
+                    </Attachment>
+                </Extrinsic>
+            </InvoiceDetailRequestHeader>
+            <InvoiceDetailOrder>
+                <InvoiceDetailOrderInfo>
+                    <OrderIDInfo orderID=""></OrderIDInfo>
+                </InvoiceDetailOrderInfo>
+                <InvoiceDetailServiceItem invoiceLineNumber="1" isAdHoc="yes" quantity="1">
+                    <InvoiceDetailServiceItemReference lineNumber="1">
+                        <ItemID>
+                            <SupplierPartID></SupplierPartID>
+                        </ItemID>
+                        <Description xml:lang="en-US">test</Description>
+                    </InvoiceDetailServiceItemReference>
+                    <SubtotalAmount>
+                        <Money currency="EUR">400.00</Money>
+                    </SubtotalAmount>
+                    <UnitOfMeasure>EA</UnitOfMeasure>
+                    <UnitPrice>
+                        <Money currency="EUR">400.00</Money>
+                    </UnitPrice>
+                    <GrossAmount>
+                        <Money currency="EUR">400.00</Money>
+                    </GrossAmount>
+                    <InvoiceDetailDiscount percentageRate="12.50">
+                        <Money currency="EUR">50.00</Money>
+                    </InvoiceDetailDiscount>
+                    <NetAmount>
+                        <Money currency="EUR">350.00</Money>
+                    </NetAmount>
+                    <Extrinsic name="punchinItemFromCatalog">no</Extrinsic>
+                </InvoiceDetailServiceItem>
+            </InvoiceDetailOrder>
+            <InvoiceDetailSummary>
+                <SubtotalAmount>
+                    <Money currency="EUR">400.00</Money>
+                </SubtotalAmount>
+                <Tax>
+                    <Money currency="EUR">28.00</Money>
+                    <Description xml:lang="en-US"></Description>
+                    <TaxDetail category="vat" percentageRate="8"
+                        taxPointDate="2025-09-23T00:00:00+02:00">
+                        <TaxableAmount>
+                            <Money currency="EUR">350.00</Money>
+                        </TaxableAmount>
+                        <TaxAmount>
+                            <Money currency="EUR">28.00</Money>
+                        </TaxAmount>
+                        <Description xml:lang="en-US"></Description>
+                    </TaxDetail>
+                </Tax>
+                <GrossAmount>
+                    <Money currency="EUR">428.00</Money>
+                </GrossAmount>
+                <InvoiceDetailDiscount>
+                    <Money currency="EUR">50.00</Money>
+                </InvoiceDetailDiscount>
+                <NetAmount>
+                    <Money currency="EUR">378.00</Money>
+                </NetAmount>
+                <DueAmount>
+                    <Money currency="EUR">378.00</Money>
+                </DueAmount>
+            </InvoiceDetailSummary>
+        </InvoiceDetailRequest>
+    </Request>
+    <ds:Signature Id="cXMLSignature" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+        xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:SignedInfo>
+            <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></ds:CanonicalizationMethod>
+            <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></ds:SignatureMethod>
+            <ds:Reference URI="#cXMLSignedInfo">
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></ds:DigestMethod>
+                <ds:DigestValue>S8Dx/+Vtlg2cawe5h2uTU7/OS4PQfen0Cac7XHmr858=</ds:DigestValue>
+            </ds:Reference>
+            <ds:Reference URI="#cXMLData">
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></ds:DigestMethod>
+                <ds:DigestValue>VqDvFGgO1kErOes7mVhczxLHMy6KQ8bXSsUtlk9K48U=</ds:DigestValue>
+            </ds:Reference>
+            <ds:Reference URI="#XAdESSignedProps" Type="http://uri.etsi.org/01903#SignedProperties">
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></ds:DigestMethod>
+                <ds:DigestValue>e3d/htQhlO2jvLTTKdaFnTIjJFX5LGUMzhKKeJK/DnY=</ds:DigestValue>
+            </ds:Reference>
+            <ds:Reference URI="#KeyInfoId">
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></ds:DigestMethod>
+                <ds:DigestValue>q8w2mMWg+yYDsE+Q8XnPgjlJQWDAF89x6sXVJiXzIek=</ds:DigestValue>
+            </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue>
+            uhmhWQIDdK+71H8H2hAzebmhDlBsm3rLDBinJwlboAU7pWi925g86hvgteS8pVQSKE3HLkCHnlqBlFQ/e3+bekhYz9OV4N6JI+Uen2gSjKjeyiTQnHecRPV0VVYCgUF8G3pe7Gnzk1zdB5Ivc7F8FQFfK3txHK9NAtlfgDwNAXvTrrOtD02Oqs2Xr7RDXtJhNfPT5L9/f/YiA+3P2+EHef78F1f/iszR94x625PxGXEUZBPnzoDDoqGqIDJjV2E6m13DXeHm7LyMkWQjqr7/l1Oi7wqcLKLm579oLTi/h/7H//4eCx0iO3kWshnmurF3qbD0hRYsfWTKodtxFsMJmA==</ds:SignatureValue>
+        <ds:KeyInfo Id="KeyInfoId">
+            <ds:X509Data>
+                <ds:X509Certificate>
+                    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</ds:X509Certificate>
+            </ds:X509Data>
+        </ds:KeyInfo>
+        <ds:Object>
+            <cXMLSignedInfo Id="cXMLSignedInfo"
+                payloadID="1758608144436-9170182280224767220@10.209.37.102" signatureVersion="1.0"></cXMLSignedInfo>
+        </ds:Object>
+        <ds:Object>
+            <Extrinsic name="ValidationPolicyId">
+                <xades:Identifier Qualifier="OIDAsURN">urn:oid:1.2.752.76.1.987.985.1.3</xades:Identifier>
+            </Extrinsic>
+        </ds:Object>
+        <ds:Object>
+            <Extrinsic name="ValidationPolicyQualifier">
+                <xades:SPURI>
+                    https://sovos.com/policies/?from=CH&amp;to=CH&amp;authCertThumbprint=6368AE9D6F751BA2C4535111E9DFD229B3085238</xades:SPURI>
+            </Extrinsic>
+        </ds:Object>
+        <ds:Object>
+            <xades:QualifyingProperties Id="QualifyingPropertiesId" Target="#cXMLSignature">
+                <xades:SignedProperties Id="XAdESSignedProps">
+                    <xades:SignedSignatureProperties>
+                        <xades:SigningTime>2025-09-23T06:15:53Z</xades:SigningTime>
+                        <xades:SigningCertificate>
+                            <xades:Cert>
+                                <xades:CertDigest>
+                                    <ds:DigestMethod
+                                        Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></ds:DigestMethod>
+                                    <ds:DigestValue>X8SQeSSfix6hfFkga4RwNs+7VqHml7GVYsCclfocmZw=</ds:DigestValue>
+                                </xades:CertDigest>
+                                <xades:IssuerSerial>
+                                    <ds:X509IssuerName>CN=TrustWeaver On Demand TEST CA Trust Server
+                                        CA, O=TrustWeaver On Demand TEST CA, C=SE</ds:X509IssuerName>
+                                    <ds:X509SerialNumber>130038940846626366709906546821552732357</ds:X509SerialNumber>
+                                </xades:IssuerSerial>
+                            </xades:Cert>
+                        </xades:SigningCertificate>
+                        <xades:SignaturePolicyIdentifier>
+                            <xades:SignaturePolicyId>
+                                <xades:SigPolicyId>
+                                    <xades:Identifier Qualifier="OIDAsURN">
+                                        urn:oid:1.2.752.76.1.987.985.1.2</xades:Identifier>
+                                </xades:SigPolicyId>
+                                <xades:SigPolicyHash>
+                                    <ds:DigestMethod
+                                        Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"></ds:DigestMethod>
+                                    <ds:DigestValue>pWwDkNX1cRqlrpzOT9Pe59rJFQw=</ds:DigestValue>
+                                </xades:SigPolicyHash>
+                                <xades:SigPolicyQualifiers>
+                                    <xades:SigPolicyQualifier>
+                                        <xades:SPURI>
+                                            https://sovos.com/wp-content/uploads/2019/10/TWOD-Test-Signing-Policy.pdf?from=CH&amp;to=CH&amp;authCertThumbprint=6368AE9D6F751BA2C4535111E9DFD229B3085238</xades:SPURI>
+                                    </xades:SigPolicyQualifier>
+                                </xades:SigPolicyQualifiers>
+                            </xades:SignaturePolicyId>
+                        </xades:SignaturePolicyIdentifier>
+                    </xades:SignedSignatureProperties>
+                </xades:SignedProperties>
+                <xades:UnsignedProperties>
+                    <xades:UnsignedSignatureProperties>
+                        <xades:SignatureTimeStamp>
+                            <xades:EncapsulatedTimeStamp>
+                                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</xades:EncapsulatedTimeStamp>
+                        </xades:SignatureTimeStamp>
+                        <xades:CertificateValues>
+                            <xades:EncapsulatedX509Certificate>
+                                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</xades:EncapsulatedX509Certificate>
+                        </xades:CertificateValues>
+                        <xades:RevocationValues>
+                            <xades:CRLValues>
+                                <xades:EncapsulatedCRLValue>
+                                    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</xades:EncapsulatedCRLValue>
+                            </xades:CRLValues>
+                        </xades:RevocationValues>
+                        <xades:ArchiveTimeStamp>
+                            <xades:EncapsulatedTimeStamp>
+                                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</xades:EncapsulatedTimeStamp>
+                        </xades:ArchiveTimeStamp>
+                    </xades:UnsignedSignatureProperties>
+                </xades:UnsignedProperties>
+            </xades:QualifyingProperties>
+        </ds:Object>
+    </ds:Signature>
+</cXML>

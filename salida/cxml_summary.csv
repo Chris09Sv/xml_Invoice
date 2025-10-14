@@ -1,0 +1,2 @@
+subtotal,subtotal_currency,tax_total,tax_currency,tax_description,tax_category,tax_percentageRate,tax_taxable_amount,tax_taxable_currency,tax_amount,tax_amount_currency,net_amount,net_currency
+8487.91,GBP,1485.00,GBP,Total Tax,vat,17.50,8487.91,GBP,1485.00,GBP,9972.91,GBP

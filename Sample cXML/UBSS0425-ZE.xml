@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cXML SYSTEM "http://xml.cxml.org/schemas/cXML/1.2.045/InvoiceDetail.dtd">
+<cXML payloadID="UBSRSO20250505T113626069" timestamp="2025-05-05T11:36:26+00:00" version="1.2.045">
+    <Header>
+        <From>
+            <Credential
+                domain="NetworkId">
+                <Identity>AN11184076125</Identity>
+            </Credential>
+            <Credential
+                domain="VendorID">
+                <Identity>0001193107</Identity>
+            </Credential>
+            <Credential
+                domain="PrivateID">
+                <Identity>0001193107</Identity>
+            </Credential>
+            <Correspondent
+                preferredLanguage="de-CH">
+                <Contact
+                    role="correspondent">
+                    <Name
+                        xml:lang="de-CH">CBOE Global Markets Inc</Name>
+                    <PostalAddress>
+                        <Street>28851 Network Place</Street>
+                        <City>Chicago</City>
+                        <PostalCode>60673-1288</PostalCode>
+                        <Country
+                            isoCountryCode="US">US</Country>
+                    </PostalAddress>
+                </Contact>
+            </Correspondent>
+        </From>
+        <To>
+            <Credential
+                domain="NetworkID">
+                <Identity>AN01395405443</Identity>
+            </Credential>
+            <Credential
+                domain="SystemID">
+                <Identity>Default</Identity>
+            </Credential>
+        </To>
+        <Sender>
+            <Credential domain="NetworkID">
+                <Identity>AN01000000001</Identity>
+            </Credential>
+            <UserAgent>ReadSoft Online</UserAgent>
+        </Sender>
+    </Header>
+    <Request Id="cXMLData" deploymentMode="production">
+        <InvoiceDetailRequest>
+            <InvoiceDetailRequestHeader invoiceDate="2025-04-30T00:00:00+00:00"
+                invoiceID="UBSS0425-ZE" invoiceOrigin="supplier" operation="new"
+                purpose="standard">
+                <InvoiceDetailHeaderIndicator />
+                <
+                    isTaxInLine="yes" />
+                <InvoicePartner>
+                    <Contact addressID=""
+                        role="remitTo">
+                        <Name
+                            xml:lang="" />
+                    </Contact>
+                </InvoicePartner>
+                <InvoicePartner>
+                    <Contact
+                        role="from">
+                        <Name
+                            xml:lang="de-CH">CBOE Global Markets Inc</Name>
+                        <PostalAddress>
+                            <Street>28851 Network Place</Street>
+                            <City>Chicago</City>
+                            <PostalCode>60673-1288</PostalCode>
+                            <Country
+                                isoCountryCode="US" />
+                        </PostalAddress>
+                    </Contact>
+                    <IdReference
+                        domain="vatID"
+                        identifier="" />
+                </InvoicePartner>
+                <InvoicePartner>
+                    <Contact
+                        addressID="D953" role="billTo">
+                        <Name
+                            xml:lang="" />
+                    </Contact>
+                    <IdReference domain="vatID"
+                        identifier="" />
+                </InvoicePartner>
+                <InvoicePartner>
+                    <Contact
+                        role="soldTo">
+                        <Name
+                            xml:lang="de-CH" />
+                        <Email>ramesh.adiyala@ubs.com</Email>
+                    </Contact>
+                </InvoicePartner>
+                <Comments>[Ariba added comment: Created in the name and on behalf of the supplier]</Comments>
+                <Extrinsic
+                    name="buyerVatID" />
+                <Extrinsic name="supplierVatID" />
+                <Extrinsic
+                    name="invoicePDF">
+                    <Attachment>
+                        <URL>cid:8DD8BC911DA64AB</URL>
+                    </Attachment>
+                </Extrinsic>
+                <Extrinsic
+                    name="IBAN" />
+                <Extrinsic name="Bank Account Number" />
+                <Extrinsic
+                    name="Bank Swift Code" />
+                <Extrinsic name="Bank Code" />
+                <Extrinsic
+                    name="isrNumber" />
+                <Extrinsic name="isrReference" />
+                <Extrinsic
+                    name="QR Payment Reference" />
+                <Extrinsic
+                    name="CompanyCode">1584</Extrinsic>
+                <Extrinsic
+                    name="invoiceSubmissionMethod">PaperViaICS</Extrinsic>
+                <Extrinsic name="supplierCommercialIdentifier" />
+            </InvoiceDetailRequestHeader>
+            <InvoiceDetailOrder>
+                <InvoiceDetailOrderInfo>
+                    <OrderIDInfo orderID=""></OrderIDInfo>
+                </InvoiceDetailOrderInfo>
+                <InvoiceDetailItem invoiceLineNumber="1" quantity="1.00">
+                    <UnitOfMeasure>EA</UnitOfMeasure>
+                    <UnitPrice>
+                        <Money currency="USD">885988.03</Money>
+                    </UnitPrice>
+                    <InvoiceDetailItemReference lineNumber="">
+                        <Description xml:lang="de-CH">Check Line detail in the attached invoice.</Description>
+                    </InvoiceDetailItemReference>
+                    <SubtotalAmount>
+                        <Money currency="USD">885988.03</Money>
+                    </SubtotalAmount>
+                    <Tax>
+                        <Money alternateAmount="890.17" alternateCurrency="USD" currency="USD">
+                            890.17</Money>
+                        <Description xml:lang="de-CH"></Description>
+                        <TaxDetail category="sales" percentageRate="0.10"
+                            taxPointDate="2025-04-30T00:00:00+00:00">
+                            <TaxableAmount>
+                                <Money currency="USD">885988.03</Money>
+                            </TaxableAmount>
+                            <TaxAmount>
+                                <Money alternateAmount="890.17" alternateCurrency="USD"
+                                    currency="USD">890.17</Money>
+                            </TaxAmount>
+                            <Description xml:lang="de-CH"></Description>
+                        </TaxDetail>
+                    </Tax>
+                    <NetAmount>
+                        <Money currency="USD">885988.03</Money>
+                    </NetAmount>
+                </InvoiceDetailItem>
+            </InvoiceDetailOrder>
+            <InvoiceDetailSummary>
+                <SubtotalAmount>
+                    <Money currency="USD">885988.03</Money>
+                </SubtotalAmount>
+                <Tax>
+                    <Money currency="USD">890.17</Money>
+                    <Description xml:lang="de-CH">Total Tax</Description>
+                    <TaxDetail category="sales" percentageRate="0.10">
+                        <TaxableAmount>
+                            <Money currency="USD">885988.03</Money>
+                        </TaxableAmount>
+                        <TaxAmount>
+                            <Money currency="USD">890.17</Money>
+                        </TaxAmount>
+                        <Description xml:lang="de-CH">sales</Description>
+                    </TaxDetail>
+                </Tax>
+                <GrossAmount>
+                    <Money currency="USD">886878.20</Money>
+                </GrossAmount>
+                <NetAmount>
+                    <Money currency="USD">886878.20</Money>
+                </NetAmount>
+            </InvoiceDetailSummary>
+        </InvoiceDetailRequest>
+    </Request>
+</cXML>

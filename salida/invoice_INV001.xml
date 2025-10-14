@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<cXML payloadID="auto_1759179746.568626" timestamp="2025-09-29T21:02:26.568626" version="1.2.045">
+    <Request Id="cXMLData" deploymentMode="test">
+        <InvoiceDetailRequest>
+            <InvoiceDetailRequestHeader invoiceDate="2025-09-29" invoiceID="INV001"
+                invoiceOrigin="supplier" operation="new" purpose="standard" />
+            <InvoiceDetailOrder>
+                <InvoiceDetailItem invoiceLineNumber="1" quantity="1">
+                    <UnitOfMeasure>EA</UnitOfMeasure>
+                    <UnitPrice>
+                        <Money currency="USD">0</Money>
+                    </UnitPrice>
+                    <InvoiceDetailItemReference lineNumber="1">
+                        <Description xml:lang="en" />
+                    </InvoiceDetailItemReference>
+                    <SubtotalAmount>
+                        <Money currency="USD">0</Money>
+                    </SubtotalAmount>
+                </InvoiceDetailItem>
+            </InvoiceDetailOrder>
+            <InvoiceDetailSummary>
+                <SubtotalAmount>
+                    <Money currency="USD">0</Money>
+                </SubtotalAmount>
+                <Tax>
+                    <Money currency="USD">0</Money>
+                </Tax>
+                <NetAmount>
+                    <Money currency="USD">0</Money>
+                </NetAmount>
+            </InvoiceDetailSummary>
+        </InvoiceDetailRequest>
+    </Request>
+</cXML>

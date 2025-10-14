@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cXML SYSTEM "http://xml.cxml.org/schemas/cXML/1.2.045/InvoiceDetail.dtd">
+<cXML timestamp="2025-10-06T01:42:00-07:00" payloadID="1759740120514-2443850692549790494@10.209.37.48">
+    <Response>
+        <Status code="201" text="Accepted">Acknowledged</Status>
+    </Response>
+</cXML>

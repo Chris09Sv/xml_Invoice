@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE cXML SYSTEM "http://xml.cxml.org/schemas/cXML/1.2.045/InvoiceDetail.dtd">
+<cXML payloadID="exc-1089728_5001262250641_2025_dev" timestamp="2025-07-16T07:14:12+0000" version="1.2.045">
+	<Header>
+		<From>
+			<Credential domain="PrivateID">
+				<Identity>0001089728</Identity>
+			</Credential>
+			<Correspondent preferredLanguage="en-US">
+				<Contact role="correspondent">
+					<Name xml:lang="en-US">Tora Trading Services, LLC</Name>
+				</Contact>
+			</Correspondent>
+		</From>
+		<To>
+			<Credential domain="NetworkID">
+				<Identity>AN01395405443-T</Identity>
+			</Credential>
+			<Credential domain="SystemID">
+				<Identity>LQECLNT100</Identity>
+			</Credential>
+		</To>
+		<Sender>
+			<Credential domain="NetworkID">
+				<Identity>AN01574874195-T</Identity>
+				<SharedSecret>UBSPass1!</SharedSecret>
+			</Credential>
+			<UserAgent>Excalibur Invoice Upload Utility</UserAgent>
+		</Sender>
+	</Header>
+	<Request Id="cXMLData" deploymentMode="test">
+		<InvoiceDetailRequest>
+			<InvoiceDetailRequestHeader invoiceDate="2025-07-04T00:00:00+02:00" invoiceID="excInv01" invoiceOrigin="supplier" operation="new" purpose="standard">
+				<InvoiceDetailHeaderIndicator/>
+				<InvoiceDetailLineIndicator/>
+				<InvoicePartner>
+					<Contact addressID="0001089728:" role="remitTo">
+						<Name xml:lang=""/>
+					</Contact>
+				</InvoicePartner>
+				<InvoicePartner>
+					<Contact role="soldTo">
+						<Name xml:lang=""/>
+						<Email name="Default" preferredLang="en-US">subha.sreeram@ubs.com</Email>
+					</Contact>
+				</InvoicePartner>
+				<PaymentTerm payInNumberOfDays="13"/>
+				<Comments>Some items in this bill are not subject to local VAT / Tax. You are required to self account for VAT / Tax where VAT / Tax is not applied.
+     </Comments>
+				<Extrinsic name="invoicePDF">
+					<Attachment>
+						<URL>cid:112b5d4a-5f1e-47e2-a353-a7f811d835ae</URL>
+					</Attachment>
+				</Extrinsic>
+				<Extrinsic name="Bank Account Number"/>
+				<Extrinsic name="Bank Swift Code"/>
+				<Extrinsic name="Bank Code"/>
+				<Extrinsic name="isrNumber"/>
+				<Extrinsic name="Payment Terms">0012</Extrinsic>
+				<Extrinsic name="CompanyCode">1584
+    </Extrinsic>
+				<Extrinsic name="invoiceSubmissionMethod">PaperViaICS</Extrinsic>
+				<Extrinsic name="Invoice Request Track ID">LPI0000001007</Extrinsic>
+				<Extrinsic name="SupplierRegistrationID"/>
+				<Extrinsic name="Source System">Excalibur</Extrinsic>
+			</InvoiceDetailRequestHeader>
+			<InvoiceDetailOrder>
+				<InvoiceDetailOrderInfo>
+					<OrderIDInfo orderID=""/>
+				</InvoiceDetailOrderInfo>
+				<InvoiceDetailItem invoiceLineNumber="1" quantity="1">
+					<UnitOfMeasure>EA</UnitOfMeasure>
+					<UnitPrice>
+						<Money currency="USD">1.0</Money>
+					</UnitPrice>
+					<InvoiceDetailItemReference lineNumber="1">
+						<Description xml:lang="en-US">MDS charges</Description>
+					</InvoiceDetailItemReference>
+					<SubtotalAmount>
+						<Money currency="USD">1.0</Money>
+					</SubtotalAmount>
+					<Distribution>
+						<Accounting name="DistributionCharge">
+							<AccountingSegment id="6204000001">
+								<Name xml:lang="en">GeneralLedger</Name>
+								<Description xml:lang="en">ID</Description>
+							</AccountingSegment>
+						</Accounting>
+						<Charge>
+							<Money alternateAmount="" alternateCurrency="" currency="USD"/>
+						</Charge>
+					</Distribution>
+				</InvoiceDetailItem>
+				<InvoiceDetailItem invoiceLineNumber="2" quantity="1">
+					<UnitOfMeasure>EA</UnitOfMeasure>
+					<UnitPrice>
+						<Money currency="USD">1.0</Money>
+					</UnitPrice>
+					<InvoiceDetailItemReference lineNumber="1">
+						<Description xml:lang="en-US">mds charges</Description>
+					</InvoiceDetailItemReference>
+					<SubtotalAmount>
+						<Money currency="USD">1.0</Money>
+					</SubtotalAmount>
+				</InvoiceDetailItem>
+			</InvoiceDetailOrder>
+			<InvoiceDetailSummary>
+				<SubtotalAmount>
+					<Money currency="USD">1764</Money>
+				</SubtotalAmount>
+				<Tax>
+					<Money currency="USD">0</Money>
+					<Description xml:lang="en-US">Summary Tax</Description>
+					<TaxDetail category="SalesTax" percentageRate="0">
+						<TaxableAmount>
+							<Money currency="USD">0.0</Money>
+						</TaxableAmount>
+						<TaxAmount>
+							<Money currency="USD">0.0</Money>
+						</TaxAmount>
+					</TaxDetail>
+				</Tax>
+				<NetAmount>
+					<Money currency="USD">1764.00</Money>
+				</NetAmount>
+			</InvoiceDetailSummary>
+		</InvoiceDetailRequest>
+	</Request>
+</cXML>
