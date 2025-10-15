@@ -1,12 +1,22 @@
-
-
+import requests
+from pathlib import Path
 from xml.dom import minidom
 import pandas as pd
 import xml.etree.ElementTree as ET
 import unicodedata
 from typing import Dict, Optional
 from db import get_connection
+import re
+import numpy as np
 
+
+def _attrib_if_not_none(**kwargs):
+    """Devuelve solo los pares cuyo valor no sea None."""
+    return {k: str(v) for k, v in kwargs.items() if v is not None}
+
+def _add_el(parent, tag, **attrib):
+    """Crea SubElement omitiendo atributos None."""
+    return ET.SubElement(parent, tag, attrib=_attrib_if_not_none(**attrib))
 
 def _normalize_cols(df: pd.DataFrame) -> pd.DataFrame:
     def norm(s):
@@ -27,14 +37,53 @@ def _find_col(df: pd.DataFrame, candidates):
             return cmap[c]
     return None
 
-def _first_value(df: pd.DataFrame, candidates, default=None):
-    if df is None or df.empty:
+def _first_value(df, cols, default=None):
+    """
+    Devuelve el primer valor no-nulo de la(s) columna(s) `cols` en `df`.
+    `cols` puede ser str o lista/tupla de posibles nombres.
+    Tolera df=None, dicts, y DataFrames; normaliza nombres (strip/lower).
+    """
+    import pandas as pd
+
+    # Normaliza lista de candidatos
+    if isinstance(cols, (list, tuple)):
+        candidates = [c for c in cols if c is not None and c != ""]
+    else:
+        candidates = [cols]
+
+    # Caso DataFrame
+    if isinstance(df, pd.DataFrame) and not df.empty:
+        # Mapa lower->nombre_real para tolerar mayúsculas/espacios
+        colmap = {str(c).strip().lower(): c for c in df.columns}
+        for name in candidates:
+            key = str(name).strip().lower()
+            if key in colmap:
+                serie = df[colmap[key]]
+                if len(serie) > 0:
+                    val = serie.iloc[0]
+                    if pd.isna(val) or val == "":
+                        continue
+                    return val
         return default
-    col = _find_col(df, candidates)
-    if not col:
+
+    # Caso dict (por si el "header" ya viene materializado)
+    if isinstance(df, dict):
+        # Probar en orden de aliases
+        for name in candidates:
+            key = str(name)
+            if key in df:
+                val = df.get(key, default)
+                if val not in (None, ""):
+                    return val
         return default
-    s = df[col].dropna()
-    return s.iloc[0] if not s.empty else default
+
+    # Cualquier otro caso
+    return default
+
+
+def _nonempty_df(df):
+    import pandas as pd
+    return isinstance(df, pd.DataFrame) and not df.empty
 
 def _iso_dt(val, default=None):
     if pd.isna(val):
@@ -48,15 +97,10 @@ def _text_or_none(x) -> Optional[str]:
     s = str(x).strip()
     return s if s != "" and s.lower() != "nan" else None
 
-# %% [markdown]
-# ==== Carga del Excel con múltiples hojas ====
 
-EXCEL_PATH = "C:/Users/crist/Downloads/cxml_template_extended.xlsx"  # <-- cambia a tu ruta real
+EXCEL_PATH = "C:/Users/crist/Downloads/cxml_template_extended.xlsx" 
 
 
-import re
-from typing import Dict
-import pandas as pd
 
 # --- Utilidades ---
 _TABLE_NAME_RE = re.compile(r"^[A-Za-z0-9_\.]+$")  # permite schema.table también
@@ -99,105 +143,298 @@ def _ensure_invoiceid(df):
     # si no hay forma, que falle con mensaje claro
     raise ValueError("No se encontró columna de factura (InvoiceID / invoice_id).")
 
-# --- Lectura desde DB ---
-def load_data(table: str, schema: str = None) -> pd.DataFrame:
+def load_data(
+    table: str,
+    schema: str = "public",
+    where: str = None,          # e.g. "COALESCE(record_active_ind,'Y')='Y'"
+    columns: list = None        # e.g. ["gtp_id", "invoice_id", "invoice_curr"]
+) -> pd.DataFrame:
     """
-    Lee todos los registros de la tabla indicada desde la DB.
-    `table` puede ser 'mytable' o 'schema.mytable' (si tu DB lo soporta).
-    Devuelve un DataFrame.
+    Lee registros de la DB y devuelve un DataFrame.
+    - `table`: nombre de tabla (con o sin schema)
+    - `schema`: por defecto 'public'; si pasas None y table ya viene con schema, lo respetamos
+    - `columns`: lista de columnas (si None => *)
+    - `where`: condición SIN la palabra WHERE (se agrega automáticamente si viene)
     """
     table = table.strip()
-    schema='public'
-    if schema:
-        full_name = f"{schema}.{table}"
-    else:
+
+    # Si el usuario pasó table con schema (p.ej. "otro.good_to_pay"), lo respetamos.
+    if "." in table or not schema:
         full_name = table
+    else:
+        full_name = f"{schema}.{table}"
 
-    # sanitizar para evitar inyección accidental
-    _sanitize_table_name(full_name)
+    _sanitize_table_name(full_name)  # asumes que ya existe
 
-    query = f"SELECT * FROM {full_name};"
-    # logging mínimo para depuración
+    cols = "*"
+    if columns and len(columns) > 0:
+        cols = ",".join(columns)
+
+    query = f"SELECT {cols} FROM {full_name}"
+    if where:
+        query += f" WHERE {where}"
+
     print(f"[load_data] Ejecutando query: {query}")
-    con = get_connection('')
-    print(pd.read_sql(query,con))
 
+    con = get_connection('')
     try:
-        
-        df2 = pd.read_sql(query, con=con)
-        # df = _ensure_invoiceid(df2)
-        print(df2)
-        return df2
+        df = pd.read_sql(query, con=con)
+        # Normaliza fechas útiles
+        for col in ("invoice_date","receipt_date","business_date","add_datetime","update_datetime","verify_datetime"):
+            if col in df.columns:
+                df[col] = pd.to_datetime(df[col], errors="coerce")
+        # Normaliza nombres
+        df.columns = [c.strip().lower() for c in df.columns]
+        return df
     finally:
-        # intentar cerrar si el objeto tiene close()
         try:
             if con is not None and hasattr(con, "close"):
                 con.close()
         except Exception:
             pass
 
-def _load_sheet(table_name: str) -> pd.DataFrame:
-    """
-    Reemplazo de la antigua función que venía del Excel.
-    Intenta leer la tabla y normalizar columnas; si falla, devuelve DataFrame vacío.
-    """
-    df = load_data(table_name,'public')
-    # print('-----------')
-    try:
-        df = load_data(table_name,'public')
-        print('-----------')
-        print(df)
-        return _normalize_cols(df)
-    except Exception as e:
-        # Puedes cambiar print por logging si lo prefieres
-        print(f"[WARN] No se pudo cargar tabla '{table_name}': {e}")
-        return pd.DataFrame()
+def build_sheets_from_snapshot(snapshot: pd.DataFrame, invoice_id) -> dict:
+    import pandas as pd
 
-def load_workbook_from_db(table_map: Dict[str, str], schema: str = None) -> Dict[str, pd.DataFrame]:
-    """
-    table_map: mapping entre el nombre 'lógico' que usaba la UI/presentación y el nombre de tabla en la BD.
-      Ej: {"Envelope": "envelope", "Header": "header", ...}
-    schema: opcional, si todas las tablas están en un schema
-    Devuelve dict con los mismos keys que table_map y DataFrames como valores.
-    """
-    sheets: Dict[str, pd.DataFrame] = {}
-    for friendly_name, db_table in table_map.items():
-        print(f"[load_workbook_from_db] Cargando '{friendly_name}' <- tabla '{db_table}'")
-        df = _load_sheet(db_table if schema is None else f"{schema}.{db_table}")
-        print(df)
-        sheets[friendly_name] = df
+    # Helpers chiquitos
+    def _blank_if_none(v):
+        if v is None:
+            return ""
+        if isinstance(v, float) and pd.isna(v):
+            return ""
+        return v
 
-    # Validación: todas las que no estén vacías deben incluir 'invoiceid' (normalizado)
-    for nm, df in sheets.items():
-        print(f"[DEBUG] Hoja '{nm}' filas={len(df)} cols={list(df.columns) if not df.empty else 'EMPTY'}")
-        if not df.empty and "invoice_id" not in [c.lower() for c in df.columns]:
-            raise ValueError(f"La hoja '{nm}' no contiene la columna 'InvoiceID' (normalizada a 'invoiceid').")
+    def _num_or_0(v):
+        v = _blank_if_none(v)
+        try:
+            return float(v)
+        except Exception:
+            return 0.0
 
-    return sheets
-TABLE_MAP = {
-    "Envelope": "envelope",
-    "Header": "header",
-    "Partners": "partners",
-    # "IdRefs": "idreferences",
-    # "OrderInfo": "orderinfo",
-    "Items": "items",
-    "Taxes": "taxes",
-    "Summary": "summary",
-    "Extrinsics": "extrinsics",
-}
+    g = snapshot[snapshot["invoice_id"] == invoice_id]
+    if g.empty:
+        raise ValueError(f"No hay registros en good_to_pay para invoice_id={invoice_id}")
 
-sheets = load_workbook_from_db(TABLE_MAP, schema=None)  # o schema="myschema" si aplica
+    head = g.iloc[0].to_dict()
+    now = pd.Timestamp.now()
+
+    # =========================
+    # Envelope (libre, valores por defecto)
+    # =========================
+    env = pd.DataFrame([{
+        "payload_id": f"auto_{now.timestamp()}",
+        "timestamp": now.isoformat(),
+        "version": "1.2.045",
+        "signature_version": "1.0",
+        "deployment_mode": "production",
+        "preferred_language": "en",
+        # opcionales / siempre presentes
+        "street": "", "city": "", "postalcode": "", "country": "", "isocountry": "",
+        "from_domain": "NetworkId", "from_identity": "AN11183544707",
+        "from_domain2": "VendorId", "from_identity2": "0001000585",
+        "from_domain3": "PrivateID", "from_identity3": "0001000585",
+        "to_cred1_domain": "", "to_cred1_identity": "",
+        "to_cred2_domain": "", "to_cred2_identity": "",
+        "sender_domain": "x", "sender_identity": "c",
+        "sender_secret": "", "user_agent": "", "request_id": "",
+        "from_corr_name":"London Stock Exchange Plc",
+    }])
+
+    # =========================
+    # Header (columnas exactas que pediste)
+    # =========================
+    hdr = pd.DataFrame([{
+        "InvoiceID":               _blank_if_none(head.get("invoice_id")),
+        "invoiceDate":             _blank_if_none(head.get("invoice_date")),
+        "invoiceOrigin":           "supplier",   # no existe en GTP
+        "operation":               "new",   # no existe en GTP
+        "purpose":                 "",   # no existe en GTP
+        "comments":                _blank_if_none(head.get("party_invoice_ref_no")),
+        "paymentTerm_days":        "standard",   # no existe en GTP
+        "isTaxInLine":             "yes",   # no existe en GTP
+        "isAccountingInLine":      "",   # no existe en GTP
+        "isShippingInLine":        "",   # no existe en GTP
+        "isSpecialHandlingInLine": "",   # no existe en GTP
+        "isDiscountInLine":        "",   # no existe en GTP
+        "isPriceAdjustmentInLine": ""    # no existe en GTP
+    }])
+
+    # =========================
+    # Partners (con nombres exactos)
+    # =========================
+    inv_id    = _blank_if_none(head.get("invoice_id"))
+    name      = _blank_if_none(head.get("party_invoice_name"))
+    addressID = _blank_if_none(head.get("trading_account_id"))
+    vendor_id = _blank_if_none(head.get("vendor_id"))
+
+    domain     = "accountID"
+    identifier = vendor_id if vendor_id != "" else addressID
+
+    partners = pd.DataFrame([{
+        "InvoiceID":  inv_id,
+        "partner_id": "P1",
+        "role":       "remitTo",
+        "addressID":  addressID,
+        "name":       name,
+        "email":      "",
+        "lang":       "",
+        "domain":     domain,
+        "identifier": identifier,
+    }])
+
+    # =========================
+    # Items (nombres exactos de tu layout)
+    # =========================
+    net   = _blank_if_none(head.get("net_invoice_amount"))
+    gross = _blank_if_none(head.get("gross_invoice_amount"))
+    curr  = _blank_if_none(head.get("invoice_curr"))
+
+    # monto base: neto si existe; si no, gross; si no, 0
+    line_subtotal = _num_or_0(net) if net != "" else (_num_or_0(gross) if gross != "" else 0.0)
+
+    product_type = _blank_if_none(head.get("product_type"))
+    product_sub  = _blank_if_none(head.get("product_sub_type"))
+    default_desc = f"Charges for {product_type}/{product_sub}".strip().strip("/")
+    description  = _blank_if_none(head.get("party_invoice_ref_no")) or default_desc or "Charges"
+
+    items = pd.DataFrame([{
+        "invoiceid":            inv_id,
+        "order_id":             "",
+        "invoiceLineNumber":    1,
+        "quantity":             1,
+        "unitOfMeasure":        "EA",
+        "unitPrice":            line_subtotal,
+        "unitPrice_currency":   curr,
+        "ref_lineNumber":       "1",
+        "description":          description,
+        "subtotal":             line_subtotal,
+        "subtotal_currency":    curr,
+        "dist_accounting_id":   "",
+        "dist_accounting_name": "",
+        "dist_accounting_desc": "",
+        "charge_amount":        "",
+        "charge_currency":      "",
+    }])
+
+    # =========================
+    # Taxes (nombres exactos de tu layout)
+    # =========================
+    tax_amt = _blank_if_none(head.get("tax_amount"))
+
+    # taxable: primero neto; si no, gross - tax; si no se puede, ""
+    if net != "":
+        taxable = _num_or_0(net)
+    elif gross != "" and tax_amt != "":
+        taxable = max(_num_or_0(gross) - _num_or_0(tax_amt), 0.0)
+    else:
+        taxable = ""
+
+    # porcentaje si es calculable
+    if isinstance(taxable, (int, float)) and taxable not in ("", 0) and tax_amt != "":
+        rate = round((_num_or_0(tax_amt) / taxable) * 100, 4)
+    else:
+        rate = ""
+
+    # taxPointDate (dd/mm/YYYY)
+    tax_point = ""
+    inv_date = head.get("invoice_date")
+    if inv_date not in (None, ""):
+        try:
+            tax_point = pd.to_datetime(inv_date).strftime("%d/%m/%Y")
+        except Exception:
+            tax_point = ""
+
+    taxes = pd.DataFrame([{
+        "invoiceid":              inv_id,
+        "category":               "vat",
+        "percentageRate":         rate,
+        "taxableAmount":          taxable if taxable != "" else "",
+        "taxableAmount_currency": curr,
+        "taxAmount":              _blank_if_none(tax_amt),
+        "taxAmount_currency":     curr,
+        "description":            "Summary Tax",
+        "alternateAmount":        _blank_if_none(tax_amt) if _blank_if_none(tax_amt) != "" else "",
+        "xml:lang":               "",
+        "alternateCurrency":      curr if curr != "" else "",
+        "taxPointDate":           tax_point,
+        "currency":               curr,
+    }])
+
+    # =========================
+    # Summary (nombres exactos de tu layout)
+    # =========================
+    tax_total = _blank_if_none(tax_amt)
+    net_num   = _num_or_0(net)   if net   != "" else None
+    gross_num = _num_or_0(gross) if gross != "" else None
+    tax_num   = _num_or_0(tax_amt) if tax_amt != "" else None
+
+    # Si no hay net y hay gross/tax, calcúlalo
+    if net == "" and (gross_num is not None or tax_num is not None):
+        net_num = (_num_or_0(gross) if gross != "" else 0.0) - (_num_or_0(tax_amt) if tax_amt != "" else 0.0)
+
+    subtotal_val = net_num if net_num is not None else ""
+    if gross == "":
+        gross_calc = (_num_or_0(net) if net != "" else 0.0) + (_num_or_0(tax_amt) if tax_amt != "" else 0.0)
+        gross_val = gross_calc if (net != "" or tax_amt != "") else ""
+    else:
+        gross_val = gross_num
+
+    summary = pd.DataFrame([{
+        "InvoiceID":           inv_id,
+        "subtotal":            subtotal_val if subtotal_val != "" else "",
+        "subtotal_currency":   curr,
+        "tax_total":           tax_total if tax_total != "" else "",
+        "net_amount":          net_num if net_num is not None else "",
+        "net_amount_currency": curr,
+        "grossAmount":         gross_val if gross_val is not None else "",
+    }])
+
+    # =========================
+    # Extrinsics (nombres exactos)
+    # =========================
+    cid = f"cid:{_blank_if_none(head.get('attachment_id'))}" if _blank_if_none(head.get("attachment_id")) != "" else ""
+    extrinsics_rows = [
+        {"InvoiceID": inv_id, "name": "invoicePeriod",     "value": _blank_if_none(head.get("invoice_period")),   "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "paymentId",         "value": _blank_if_none(head.get("payment_id")),       "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "productType",       "value": _blank_if_none(head.get("product_type")),     "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "productSubType",    "value": _blank_if_none(head.get("product_sub_type")), "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "businessDate",      "value": _blank_if_none(head.get("business_date")),    "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "recordStatus",      "value": _blank_if_none(head.get("record_status")),    "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "recordActiveInd",   "value": _blank_if_none(head.get("record_active_ind")),"attachment_url": ""},
+        # adicionales de tu layout
+        {"InvoiceID": inv_id, "name": "buyerVatID",              "value": "", "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "supplierVatID",           "value": "", "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "invoicePDF",              "value": "", "attachment_url": cid},
+        {"InvoiceID": inv_id, "name": "IBAN",                    "value": "", "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "Bank Account Number",     "value": "", "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "CompanyCode",             "value": "", "attachment_url": ""},
+        {"InvoiceID": inv_id, "name": "invoiceSubmissionMethod", "value": "", "attachment_url": ""},
+    ]
+    extrinsics = pd.DataFrame(extrinsics_rows)[["InvoiceID","name","value","attachment_url"]]
+
+    return {
+        "Envelope":   env,
+        "Header":     hdr,
+        "Partners":   partners,
+        "Items":      items,
+        "Taxes":      taxes,
+        "Summary":    summary,
+        "Extrinsics": extrinsics
+    }
 
 
 
 
+def build_cxml_from_snapshot(snapshot: pd.DataFrame, invoice_id):
+    sheets = build_sheets_from_snapshot(snapshot, invoice_id)
+    return build_cxml_for_invoice(str(invoice_id), sheets)
 
 
-# display({k: v.head(3) for k, v in sheets.items()})
+    
 
-# %% [markdown]
-# ==== Aliases de columnas por hoja ====
-# Ajusta / amplía libremente
+
+
+
 
 ALIAS_ENV = {
     "payload_id":      ["payloadid"],
@@ -323,25 +560,11 @@ ALIAS_EXT = {
     "value": ["value"],
 }
 
-# %% [markdown]
-# ==== Generación de cXML por factura ====
-
-# from attr import attrib
-import numpy as np
 
 
-def _filter_by_invoice(df: pd.DataFrame, invoice_id) -> pd.DataFrame:
-    # print(df)
-    if df is None or df.empty:
-        
-        return df
-    col = _find_col(df, ["invoice_id",'invoiceid'])
-    if col:
-        # return pd.DataFrame()
-        return df[df[col] == invoice_id].reset_index(drop=True)
-    else:
-        print('this is the error')
-        return KeyError
+
+
+
 
 def _add_text(parent, tag, text: Optional[str], attrib: dict = None):
     if text is None and not attrib:
@@ -387,6 +610,20 @@ def dump_xml(elem, include_doctype=True):
     return output   
 
 
+def _filter_by_invoice(df: pd.DataFrame, invoice_id) -> pd.DataFrame:
+    import pandas as pd
+    if df is None or (isinstance(df, pd.DataFrame) and df.empty):
+        return df
+    if not isinstance(df, pd.DataFrame):
+        # si llegó algo raro, mejor no romper
+        return pd.DataFrame()
+
+    col = _find_col(df, ["invoice_id", "invoiceid"])
+    if not col:
+        # No hay columna: devolvemos sin filtrar (para hojas “globales”)
+        return df.reset_index(drop=True)
+    return df[df[col] == invoice_id].reset_index(drop=True)
+
 
 def build_cxml_for_invoice(inv_id, sheets: Dict[str, pd.DataFrame]) -> ET.ElementTree:
     
@@ -397,7 +634,7 @@ def build_cxml_for_invoice(inv_id, sheets: Dict[str, pd.DataFrame]) -> ET.Elemen
     # idr = _filter_by_invoice(sheets["IdRefs"], inv_id)
     # oin = _filter_by_invoice(sheets["OrderInfo"], int(inv_id) if inv_id.isdigit() else inv_id)
     oin = pd.DataFrame()
-    it  = _filter_by_invoice(sheets["Items"], int(18173))# if inv_id.isdigit() else inv_id)
+    it  = _filter_by_invoice(sheets["Items"], int(inv_id) if inv_id.isdigit() else inv_id)
     tax = _filter_by_invoice(sheets["Taxes"], int(inv_id) if inv_id.isdigit() else inv_id)
     summ= _filter_by_invoice(sheets["Summary"],int(inv_id) if inv_id.isdigit() else inv_id)
     ext = _filter_by_invoice(sheets["Extrinsics"],  int(inv_id) if inv_id.isdigit() else inv_id)
@@ -418,13 +655,12 @@ def build_cxml_for_invoice(inv_id, sheets: Dict[str, pd.DataFrame]) -> ET.Elemen
     
 
 
-    cxml = ET.Element("cXML", attrib={
-        "payloadID": payloadID,
-        "signatureVersion": _text_or_none(_first_value(env, ALIAS_ENV["signature_version"], "1.0")),
-
-        "timestamp": timestamp,
-        "version":   version,
-    })
+    cxml = ET.Element("cXML", attrib=_attrib_if_not_none(
+        payloadID=_text_or_none(_first_value(env, ALIAS_ENV["payload_id"], f"auto_{pd.Timestamp.now().timestamp()}")),
+        signatureVersion=_text_or_none(_first_value(env, ALIAS_ENV["signature_version"], "1.0")),
+        timestamp=_text_or_none(_first_value(env, ALIAS_ENV["timestamp"], pd.Timestamp.now().isoformat())),
+        version=_text_or_none(_first_value(env, ALIAS_ENV["version"], "1.2.045")),
+    ))
 
     # Header (From/To/Sender)
     header = ET.SubElement(cxml, "Header")
@@ -456,9 +692,10 @@ def build_cxml_for_invoice(inv_id, sheets: Dict[str, pd.DataFrame]) -> ET.Elemen
             _add_text(cred, "Identity", f_id3)
 
         if f_name:
-            corr = ET.SubElement(From, "Correspondent", attrib={"preferredLanguage": f_language})
-            con  = ET.SubElement(corr, "Contact", attrib={"role": "correspondent"})
-            _add_text(con, "Name", f_name, {"xml:lang": f_language})
+            corr = ET.SubElement(From, "Correspondent", attrib=_attrib_if_not_none(preferredLanguage=f_language))
+            con  = ET.SubElement(corr, "Contact", attrib=_attrib_if_not_none(role="correspondent"))
+            _add_text(con, "Name", f_name, _attrib_if_not_none(**({"xml:lang": f_language} if f_language else {})))
+
 
             
             if f_street or f_city or f_postalcode or f_country or f_isocountry:
@@ -513,7 +750,7 @@ def build_cxml_for_invoice(inv_id, sheets: Dict[str, pd.DataFrame]) -> ET.Elemen
     inv_req = ET.SubElement(Request, "InvoiceDetailRequest")
 
     # ---- Header de la factura
-    inv_date_raw = _first_value(hdr, ALIAS_HDR["invoice_date"], pd.Timestamp.today())
+    inv_date_raw =  _first_value(hdr, ALIAS_HDR["invoice_date"], pd.Timestamp.today())
     inv_date     = _iso_dt(inv_date_raw, pd.Timestamp.today().isoformat())
     inv_id_text  = _text_or_none(_first_value(hdr, ALIAS_HDR["invoice_id"], inv_id))
     inv_origin   = _text_or_none(_first_value(hdr, ALIAS_HDR["invoice_origin"], "supplier"))
@@ -537,7 +774,8 @@ def build_cxml_for_invoice(inv_id, sheets: Dict[str, pd.DataFrame]) -> ET.Elemen
             has_line_tax = True
     ET.SubElement(hdr_el, "InvoiceDetailHeaderIndicator")
     ET.SubElement(hdr_el, "InvoiceDetailLineIndicator",
-                  attrib={"isTaxInLine": _first_value(hdr,ALIAS_HDR['isTaxInLine'])})
+              attrib={"isTaxInLine": str(_first_value(hdr, ALIAS_HDR['isTaxInLine'], "false")).lower()})
+
 
     # PaymentTerm + Comments
     # pay_days = _text_or_none(_first_value(hdr, ALIAS_HDR["payment_days"]))
@@ -547,7 +785,7 @@ def build_cxml_for_invoice(inv_id, sheets: Dict[str, pd.DataFrame]) -> ET.Elemen
 
 
     # Partners
-    if not prt.empty:
+    if _nonempty_df(prt):
         role_col = _find_col(prt, ALIAS_PART["role"])
         addr_col = _find_col(prt, ALIAS_PART["address_id"])
         name_col = _find_col(prt, ALIAS_PART["name"])
@@ -922,7 +1160,7 @@ def build_cxml_for_invoice(inv_id, sheets: Dict[str, pd.DataFrame]) -> ET.Elemen
     arch_ts = ET.SubElement(usp, 'xades:ArchiveTimeStamp')
     ET.SubElement(arch_ts, 'xades:EncapsulatedTimeStamp').text = ENCAPSULATED_ARCHIVE_TIMESTAMP
 
-    dump_xml(cxml, include_doctype=True)       # 👈 imprímelo aquí
+    # dump_xml(cxml, include_doctype=True)       # 👈 imprímelo aquí
 
     return ET.ElementTree(cxml)
 
@@ -946,18 +1184,15 @@ def generate_all_cxml(sheets: Dict[str, pd.DataFrame], output_prefix="./salida/i
         print(inv_id)
         out = f"{output_prefix}{inv_id}.xml"
         xml_body = tostring(root, encoding="utf-8")
-        print(f'done invoice {inv_id}')
 
         with open(out, "wb") as f:
             f.write(b'<?xml version="1.0" encoding="UTF-8"?>\n')
             f.write((DOCTYPE + "\n").encode("utf-8"))
             f.write(xml_body)
-
         print(f"✅ XML generado: {out}")
 
-generate_all_cxml(sheets, output_prefix="./salida/")
-import requests
-from pathlib import Path
+
+
 
 def send_xml_file(xml_path: str, url: str = "http://localhost:8000/cxml"):
     p = Path(xml_path)
@@ -978,12 +1213,55 @@ def send_xml_file(xml_path: str, url: str = "http://localhost:8000/cxml"):
     print(resp.text)
     return resp
 
-# Ejemplo de uso:
-response = send_xml_file("./salida/4701265854.xml")
 
 
-if response.status_code  in [406]:
-    print('needs to update the goodtopay table')
+snapshot = load_data(
+    table="good_to_pay",
+    where="COALESCE(record_active_ind,'Y')='Y'"
+)
+
+
+
+# EXCEL_PATH = "C:/Users/crist/Downloads/cxml_template_extended.xlsx"  # <-- cambia a tu ruta real
+
+# def _load_sheet(xls: pd.ExcelFile, name: str) -> pd.DataFrame:
+#     try:
+#         df = pd.read_excel(xls, sheet_name=name)
+#         return _normalize_cols(df)
+#     except Exception:
+#         return pd.DataFrame()
+# def load_workbook(path: str) -> Dict[str, pd.DataFrame]:
+#     xls = pd.ExcelFile(path)
+#     sheets = {
+#         "Envelope":   _load_sheet(xls, "envelope"),
+#         "Header":     _load_sheet(xls, "header"),
+#         "Partners":   _load_sheet(xls, "partners"),
+#         "IdRefs":     _load_sheet(xls, "idreferences"),
+#         "OrderInfo":  _load_sheet(xls, "orderinfo"),
+#         "Items":      _load_sheet(xls, "items"),
+#         "Taxes":      _load_sheet(xls, "taxes"),
+#         "Summary":    _load_sheet(xls, "summary"),
+#         "Extrinsics": _load_sheet(xls, "extrinsics"),
+#     }
+#     # Validación: todas con InvoiceID
+#     for nm, df in sheets.items():
+#         if not df.empty and "invoiceid" not in [c.lower() for c in df.columns]:
+#             raise ValueError(f"La hoja '{nm}' no contiene la columna 'InvoiceID'.")
+#     return sheets
+
+# sheets = load_workbook(EXCEL_PATH)
+# generate_all_cxml(sheets, output_prefix="./salida/")
+
+invoice_ids = sorted(snapshot["invoice_id"].dropna().unique().tolist())
+sheets =None
+for invoice in invoice_ids:
+    sheets = build_sheets_from_snapshot(snapshot=snapshot,invoice_id=invoice)
+
+
+    generate_all_cxml(sheets, output_prefix="./salida/")
+    response = send_xml_file(f"./salida/{invoice}.xml")    
+    if response.status_code  in [406]:
+        print('needs to update the goodtopay table')
 
 
 

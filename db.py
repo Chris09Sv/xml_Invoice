@@ -8,6 +8,7 @@ def get_session(db_url: str):
     return sessionmaker(bind=engine)()
 
 def get_connection(db):
+    # if db.empty or db=='':
     database = 'postgresql+psycopg2://admin:admin@localhost:5432/examin'
 
     db =database
