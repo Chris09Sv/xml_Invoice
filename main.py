@@ -219,7 +219,7 @@ def build_sheets_from_snapshot(snapshot: pd.DataFrame, invoice_id) -> dict:
     now = pd.Timestamp.now()
 
     # =========================
-    # Envelope (libre, valores por defecto)
+    # Envelope 
     # =========================
     env = pd.DataFrame([{
         "payload_id": f"auto_{now.timestamp()}",
@@ -228,7 +228,6 @@ def build_sheets_from_snapshot(snapshot: pd.DataFrame, invoice_id) -> dict:
         "signature_version": "1.0",
         "deployment_mode": "production",
         "preferred_language": "en",
-        # opcionales / siempre presentes
         "street": "", "city": "", "postalcode": "", "country": "", "isocountry": "",
         "from_domain": "NetworkId", "from_identity": "AN11183544707",
         "from_domain2": "VendorId", "from_identity2": "0001000585",
@@ -241,7 +240,7 @@ def build_sheets_from_snapshot(snapshot: pd.DataFrame, invoice_id) -> dict:
     }])
 
     # =========================
-    # Header (columnas exactas que pediste)
+    # Header 
     # =========================
     hdr = pd.DataFrame([{
         "InvoiceID":               _blank_if_none(head.get("invoice_id")),
@@ -260,7 +259,7 @@ def build_sheets_from_snapshot(snapshot: pd.DataFrame, invoice_id) -> dict:
     }])
 
     # =========================
-    # Partners (con nombres exactos)
+    # Partners 
     # =========================
     inv_id    = _blank_if_none(head.get("invoice_id"))
     name      = _blank_if_none(head.get("party_invoice_name"))
