@@ -1262,6 +1262,3 @@ for invoice in invoice_ids:
     if response.status_code  in [406]:
         print('needs to update the goodtopay table')
 
-
-
-
